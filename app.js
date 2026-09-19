@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'todo-list-items';
 const THEME_KEY = 'todo-list-theme';
+const FILTER_KEY = 'todo-list-filter';
 
 // 取得頁面上的互動元素。
 const form = document.getElementById('todo-form');
@@ -23,7 +24,14 @@ function loadTodos() {
 }
 
 let todos = loadTodos();
-let currentFilter = 'all';
+let currentFilter = loadFilter();
+
+// 讀取篩選條件，不合法的值一律回到全部。
+function loadFilter() {
+  const savedFilter = localStorage.getItem(FILTER_KEY);
+  const validFilters = ['all', 'active', 'completed'];
+  return validFilters.includes(savedFilter) ? savedFilter : 'all';
+}
 
 // 套用主題並更新切換按鈕的圖示與文字。
 function applyTheme(theme) {
@@ -73,6 +81,15 @@ function getEmptyMessage() {
   if (todos.length === 0) return '還沒有任何待辦事項，新增一個吧!';
   if (currentFilter === 'active') return '太棒了，沒有未完成的事項!';
   return '還沒有已完成的事項。';
+}
+
+// 更新篩選按鈕的選中狀態。
+function updateFilterButtons() {
+  filterButtons.forEach((button) => {
+    const isActive = button.dataset.filter === currentFilter;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
 }
 
 // 依照目前資料重新繪製清單與未完成數量。
@@ -161,17 +178,13 @@ themeToggle.addEventListener('click', () => {
 filterButtons.forEach((button) => {
   button.addEventListener('click', () => {
     currentFilter = button.dataset.filter;
-
-    filterButtons.forEach((filterButton) => {
-      const isActive = filterButton === button;
-      filterButton.classList.toggle('is-active', isActive);
-      filterButton.setAttribute('aria-pressed', String(isActive));
-    });
-
+    localStorage.setItem(FILTER_KEY, currentFilter);
+    updateFilterButtons();
     render();
   });
 });
 
-// 頁面載入時先初始化主題，再顯示已保存的待辦事項。
+// 頁面載入時先初始化主題與篩選按鈕，再顯示已保存的待辦事項。
 initializeTheme();
+updateFilterButtons();
 render();
