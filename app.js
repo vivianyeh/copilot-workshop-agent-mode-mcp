@@ -72,7 +72,7 @@ function getVisibleTodos() {
 function getEmptyMessage() {
   if (todos.length === 0) return '還沒有任何待辦事項，新增一個吧!';
   if (currentFilter === 'active') return '太棒了，沒有未完成的事項!';
-  return '還沒有已完成的事項。';
+  return '目前沒有已完成的事項。';
 }
 
 // 依照目前資料重新繪製清單與未完成數量。
