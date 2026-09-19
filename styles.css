@@ -15,6 +15,41 @@
   --danger: #b45c51;
   --danger-soft: #f8e9e5;
   --shadow: rgba(53, 62, 58, 0.12);
+  --button-text: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page-bg: #1b2422;
+    --card-bg: #26322f;
+    --input-bg: #202b28;
+    --text: #edf3ef;
+    --muted: #aab8b2;
+    --border: #40514b;
+    --accent: #82c8b5;
+    --accent-hover: #a0d8c8;
+    --accent-soft: #304b43;
+    --danger: #ee9c91;
+    --danger-soft: #4b302d;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --button-text: #17211e;
+  }
+}
+
+:root[data-theme="dark"] {
+  --page-bg: #1b2422;
+  --card-bg: #26322f;
+  --input-bg: #202b28;
+  --text: #edf3ef;
+  --muted: #aab8b2;
+  --border: #40514b;
+  --accent: #82c8b5;
+  --accent-hover: #a0d8c8;
+  --accent-soft: #304b43;
+  --danger: #ee9c91;
+  --danger-soft: #4b302d;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --button-text: #17211e;
 }
 
 body {
@@ -43,6 +78,13 @@ body {
   margin-bottom: 28px;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .eyebrow {
   margin: 0 0 10px;
   color: var(--accent);
@@ -53,8 +95,28 @@ body {
 
 h1 {
   margin: 0;
+  min-width: 0;
   font-size: clamp(1.8rem, 7vw, 2.4rem);
   line-height: 1.2;
+}
+
+.btn-theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-theme:hover {
+  border-color: var(--accent);
 }
 
 .subtitle {
@@ -91,7 +153,7 @@ h1 {
 
 .btn-add {
   padding: 0 20px;
-  color: #fff;
+  color: var(--button-text);
   background: var(--accent);
   border: 0;
   border-radius: 10px;
@@ -105,10 +167,42 @@ h1 {
 }
 
 .btn-add:focus-visible,
+.btn-theme:focus-visible,
+.btn-filter:focus-visible,
 .btn-delete:focus-visible,
 .todo-item input:focus-visible {
   outline: 3px solid var(--accent-soft);
   outline-offset: 2px;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.btn-filter {
+  flex: 1;
+  padding: 9px 10px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.btn-filter:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.btn-filter.is-active {
+  color: var(--button-text);
+  background: var(--accent);
+  border-color: var(--accent);
+  font-weight: 700;
 }
 
 .todo-list {
@@ -209,6 +303,16 @@ h1 {
 
   .todo-form {
     flex-direction: column;
+  }
+
+  .title-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-theme {
+    align-self: flex-start;
   }
 
   .btn-add {
